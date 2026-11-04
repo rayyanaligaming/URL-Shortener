@@ -17,8 +17,8 @@ app.use(express.json({ limit: '10kb' }));
 const authLimiter = rateLimit({
   name: 'auth',
   capacity: 10,
-  refillPerSec: 10 / 60, // 10 per minute sustained
-  keyFn: (req) => req.ip,
+  refillPerSec: 10 / 60,
+  keyFn: (req) => req.headers['cf-connecting-ip'] || req.ip,
 });
 app.use('/api/auth', authLimiter, authRoutes);
 app.use('/api/links', linkRoutes);
